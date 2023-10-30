@@ -29,13 +29,17 @@ export default function TodoForm({list, setList} : any){
     function getLastId(){
         const prefix = 'todo-';
         let keys = Object.keys(localStorage);
-
-        keys = keys.filter(key => key.startsWith(prefix));
-        keys = [...keys].sort();
-        if (keys.length > 0) {
-            const lastKey = keys[keys.length - 1];
-            let number = lastKey.match(/\d/g);
-            return number?.join("");
+        let newItems : any = [];
+        keys.forEach(key => {
+            if (key.startsWith(prefix)) {
+                let data = JSON.parse(localStorage.getItem(key) || '{}');
+                newItems.push(data);
+            }
+        });
+        let sorted = [...newItems].sort((a, b) => a.id - b.id);
+        if (sorted.length > 0) {
+            const lastKey = sorted[sorted.length - 1];
+            return lastKey.id;
         }
         return 0;
     }

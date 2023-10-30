@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-export default function TodoForm({list, setList}){
+export default function TodoForm({list, setList} : any){
     const [errorAlert, setErrorAlert] = useState(false);
-    function formHandler(e){
+    function formHandler(e : any){
         e.preventDefault();
         const element = e.target.elements;
         const todo = element['todo'].value;
@@ -10,7 +10,7 @@ export default function TodoForm({list, setList}){
             setErrorAlert(true);
             return true;
         }
-        let nextId = getLastId();
+        let nextId : any = getLastId();
         const data = { id: ++nextId, name: todo, check: false };
 
         setList([...list, data]);
@@ -19,7 +19,7 @@ export default function TodoForm({list, setList}){
         e.target.reset();
     }
 
-    function handleInput(e){
+    function handleInput(e : any){
         if(e.target.value != ""){
             setErrorAlert(false);
         }else{
@@ -35,12 +35,12 @@ export default function TodoForm({list, setList}){
         if (keys.length > 0) {
             const lastKey = keys[keys.length - 1];
             let number = lastKey.match(/\d/g);
-            return number.join("");
+            return number?.join("");
         }
         return 0;
     }
 
-    function saveLocal(data){
+    function saveLocal(data : any){
         localStorage.setItem('todo-'+data.id, JSON.stringify(data))
     }
 

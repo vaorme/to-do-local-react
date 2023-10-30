@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 
-export default function TodoList({list, setList}){
+export default function TodoList({list, setList} : any){
     function getData(){
         const prefix = 'todo-';
         const keys = Object.keys(localStorage);
-        const matchItems = [];
+        const matchItems : any = [];
 
         keys.forEach(key => {
             if (key.startsWith(prefix)) {
-                let data = JSON.parse(localStorage.getItem(key));
+                let data = JSON.parse(localStorage.getItem(key) || '{}');
                 matchItems.push(data);
             }
         });
@@ -16,20 +16,20 @@ export default function TodoList({list, setList}){
         setList(sortedList);
     }
 
-    function handleDelete(id){
+    function handleDelete(id : any){
         localStorage.removeItem('todo-'+id);
         getData();
     }
-    function handleCheck(e, id){
+    function handleCheck(e : any, id : any){
         const target = e.target;
-        let data = localStorage.getItem('todo-'+id);
-        data = JSON.parse(data);
-        if(target && target.value == 'on' && !data.check){
-            data.check = true;
+        const data = localStorage.getItem('todo-'+id);
+        let newData = JSON.parse(data || '{}');
+        if(target && target.value == 'on' && !newData.check){
+            newData.check = true;
         }else{
-            data.check = false;
+            newData.check = false;
         }
-        localStorage.setItem('todo-'+id, JSON.stringify(data));
+        localStorage.setItem('todo-'+id, JSON.stringify(newData));
 
         getData();
     }
@@ -40,7 +40,7 @@ export default function TodoList({list, setList}){
     
     return <>
         <div className="todoList">
-            {list.length > 0? list.map(item =>(
+            {list.length > 0? list.map((item : any) =>(
                 <div className="item" key={item.id}>
                     <div className="check">
                         <label htmlFor={"check-"+item.id}>

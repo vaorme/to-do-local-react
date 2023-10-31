@@ -1,21 +1,20 @@
 import { useState } from "react";
 
-export default function TodoForm({list, setList} : any){
+export default function TodoForm({handleAddTodo} : any){
     const [errorAlert, setErrorAlert] = useState(false);
+    const errorClass = errorAlert? 'error' : '';
+
     function formHandler(e : any){
         e.preventDefault();
         const element = e.target.elements;
-        const todo = element['todo'].value;
-        if(todo == ""){
+        const value = element['todo'].value;
+        if(value == ""){
             setErrorAlert(true);
             return true;
         }
-        let nextId : any = getLastId();
-        const data = { id: ++nextId, name: todo, check: false };
+        const data = { id: (+new Date()).toString(), name: value, check: false };
 
-        setList([...list, data]);
-        saveLocal(data);
-
+        handleAddTodo(data);
         e.target.reset();
     }
 
@@ -26,31 +25,10 @@ export default function TodoForm({list, setList} : any){
             setErrorAlert(true);
         }
     }
-    function getLastId(){
-        const prefix = 'todo-';
-        let keys = Object.keys(localStorage);
-        let newItems : any = [];
-        keys.forEach(key => {
-            if (key.startsWith(prefix)) {
-                let data = JSON.parse(localStorage.getItem(key) || '{}');
-                newItems.push(data);
-            }
-        });
-        let sorted = [...newItems].sort((a, b) => a.id - b.id);
-        if (sorted.length > 0) {
-            const lastKey = sorted[sorted.length - 1];
-            return lastKey.id;
-        }
-        return 0;
-    }
-
-    function saveLocal(data : any){
-        localStorage.setItem('todo-'+data.id, JSON.stringify(data))
-    }
 
     return <>
         <form action="" className="todoForm" onSubmit={formHandler}>
-            <input type="text" className={errorAlert? 'error' : ''} name="todo" placeholder="Agregar" onChange={handleInput}/>
+            <input type="text" className={errorClass} name="todo" placeholder="Agregar" onChange={handleInput}/>
             <button>
                 <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

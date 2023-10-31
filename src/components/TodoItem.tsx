@@ -8,7 +8,7 @@ export default function TodoItem({item, todos, setTodos} : any){
         setTodos(updateTodo)
     }
     function handleCheck(e : any){
-        const { name, checked } = e.target;
+        const { checked } = e.target;
         const updateTodo = todos.map((todo : any) => ({
             ...todo,
             check: item.name? checked : item.check
@@ -25,7 +25,7 @@ export default function TodoItem({item, todos, setTodos} : any){
         <div className="item">
             <div className="check">
                 <label htmlFor={"check-"+item.id}>
-                    <input type="checkbox" name="checked" id={"check-"+item.id} checked={checked} onChange={(e) => handleCheck(e, item.id)}/>
+                    <input type="checkbox" name="checked" id={"check-"+item.id} checked={checked} onChange={(e) => handleCheck(e)}/>
                     <div className="checkbox">  </div>
                 </label>
             </div>
